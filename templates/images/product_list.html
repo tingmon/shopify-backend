@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+Home
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% if user.is_staff%}
+        <li class="nav_link">
+            <a>Create</a>
+        </li>
+        <li class="nav_link">
+            <a>Delete</a>
+        </li>
+    {%endif%}
+</ul>
+<h2>Hello</h2>
+<div></div>
+    {%for product in products%}{% comment %} object_list {% endcomment %}
+        <a href="{% url "images:detail" product.pk %}">
+            <img style="width: 500px;" src="{{product.fisrt_photo}}">
+        </a> 
+        
+        {% comment %} <a href="{% url "images:detail" product.pk %}">
+            <div style="background-image: url({{product.fisrt_photo}})" ></div>
+        </a> {% endcomment %}
+
+        <p>name: {{product.name}}</p>
+        <p>price: {{product.price}}</p>
+        <p>stock: {{product.stock}}</p>
+        {% comment %} {{image.color_detector}} {% endcomment %}
+    {%endfor%}
+
+    <div>
+        {% if page_obj.has_previous %}
+        <a href="?page={{page_obj.previous_page_number}}"><i class="fas fa-arrow-left fa-lg"></i></a>
+        {% endif %}
+
+        <span>{{page_obj.number}} of {{page_obj.paginator.num_pages}}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{page_obj.next_page_number}}"><i class="fas fa-arrow-right fa-lg"></i></a>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+
+<div></div>
+<div></div>
+<div></div>
+<div></div>

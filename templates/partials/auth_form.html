@@ -1,0 +1,15 @@
+<form method="post">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        {%for error in form.non_field_errors%}
+                <span>{{error}}</span>
+        {%endfor%}
+    {%endif%}
+
+    {% for field in form %}
+        {% include 'partials/form_input.html'%}
+    {% endfor %}
+
+    <button>{{cta}}</button>
+</form>

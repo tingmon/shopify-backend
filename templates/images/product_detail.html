@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+    {{product.name}}
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1>{{product.name}}</h1>
+</div>
+
+<ul>
+    {% if product.uploader == user %}
+        <li class="nav_link">
+            <a href="{% url "images:edit" product.pk %}">Edit</a>
+        </li>
+    {%endif%}
+</ul>
+
+<div>
+    <a href="{% url "images:detail" product.pk %}">
+        <img style="width: 500px;" src="{{product.fisrt_photo}}">
+    </a> 
+    <p>name: {{product.name}}</p>
+    {% comment %} <p>path: {{image.file.url}}</p> {% endcomment %}
+    <p>price: {{product.price}}</p>
+    <p>stock: {{product.stock}}</p>
+    {% if user.is_authenticated%}
+        <a>Order</a>
+    {%endif%}
+</div>
+{%endblock%}

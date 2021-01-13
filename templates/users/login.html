@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+    Log in
+{% endblock %}
+
+{% block search_bar %}
+{% endblock %}
+
+{% block content %}
+{% comment %} responsive web design 반드시 기억, 작은화면을 기준으로 큰 화면을 구상 {% endcomment %}
+<div>
+    {% include 'partials/auth_form.html' with form=form cta="Log In"%}
+    <div>
+        <span class="mr-2">Don't have an account?</span>
+        <a href="{% url "users:signup" %}" class="text-green-400 font-bold rounded-md">Sign Up</a>
+    </div>
+</div>
+
+
+{% endblock %}

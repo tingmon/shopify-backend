@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+Search
+{% endblock %}
+
+{% block search_bar %}
+{% endblock %}
+
+{% block content %}
+<h2>This is search</h2>
+
+<div>
+    <h3>Search</h3>
+    <form method="GET" action="{% url "core:search"%}">
+        {{form.as_p}}
+        <button>Search</button>
+    </form>
+
+    <h3>Result</h3>
+    {% for product in products%}
+        <a href="{% url "images:detail" product.pk %}">
+            <img style="width: 500px;" src="{{product.fisrt_photo}}">
+        </a> 
+
+        <p>name: {{product.caption}}</p>
+        <p>price: {{product.price}}</p>
+        <p>stock: {{product.stock}}</p>
+        {% comment %} {{image.color_detector}} {% endcomment %}
+    {%endfor%}
+</div>
+
+<div>
+    {% if products.has_previous %}
+    <a href="?page={{products.previous_page_number}}"><i class="fas fa-arrow-left fa-lg"></i></a>
+    {% endif %}
+
+    <span>{{products.number}} of {{products.paginator.num_pages}}</span>
+
+    {% if products.has_next %}
+    <a href="?page={{products.next_page_number}}"><i class="fas fa-arrow-right fa-lg"></i></a>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+
+<div></div>
+<div></div>
+<div></div>
