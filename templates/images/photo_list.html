@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block content %}
-    <div>
- 
+    <form>
+        {% comment %} {% csrf_token %} {% endcomment %}
         <div >
             <a href="{% url "images:add-photo" product.pk %}">Upload Photo</a>
         </div>
@@ -28,11 +28,14 @@
                 </div>
             </div>
         {% endfor %}
-
+        <div>
+            <input type="submit" value="Delete Seleted Photo"/>
+            {% comment %} <a href="{%url "images:selected-delete" product.pk %}">Delete selected photos</a> {% endcomment %}
+        </div>
 
         <div>
             <a href="{%url "images:edit" product.pk %}">Back to Product</a>
         </div>
-    </div>
+    </form>
 
 {% endblock %}

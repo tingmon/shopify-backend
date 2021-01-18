@@ -129,6 +129,17 @@ def delete_photo(request, product_pk, photo_pk):
         return redirect(reverse("core:home"))
 
 
+def delete_selected_photo(request, pk):
+    print(request)
+    print(request.POST)
+    print(dir(request))
+    if request.POST.get('delete'):
+        photo_list = models.Photo.objects.filter(
+            id__in=request.POST.getlist('delete'))
+        print(photo_list)
+    return redirect(reverse("images:photos", kwargs={"pk": pk}))
+
+
 class PhotoEditView(UpdateView):
     model = models.Photo
     template_name = "images/photo_edit.html"

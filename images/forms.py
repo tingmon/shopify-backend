@@ -9,6 +9,10 @@ class SearchForm(forms.Form):
     in_stock = forms.BooleanField(required=False)
 
 
+class PhotoDeleteForm(forms.Form):
+    delete = forms.BooleanField(required=False)
+
+
 class PhotoAddForm(forms.ModelForm):
     class Meta:
         model = models.Photo
