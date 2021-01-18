@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+{{product.name}}'s' Photos
+{% endblock %}
+
+{% block search_bar %}
+{% endblock %}
+
+{% block content %}
+    <div>
+ 
+        <div >
+            <a href="#">Upload Photo</a>
+        </div>
+
+        {% for photo in product.photos.all %}
+            <div style="display: flex; justify-content: space-between; ">
+                <div style="margin-left:100px;">
+                    <img src="{{photo.file.url}}" style="width: 450px;"/>
+                    <p>{{photo.caption}}</p>
+                    <p>{{product.name}}</p>
+                </div>
+                <div>
+                    <input style="margin-right:20px;" type="checkbox" id="delete" name="delete" value="{{photo.pk}}">
+                    <a style="font-size: 20px; margin-right:20px;" href="{% url "images:edit-photo" product.pk photo.pk %}">Edit Photo</a>
+                    <a style="font-size: 20px; margin-right:600px;" href="{% url "images:delete-photo" product.pk photo.pk %}">Delete Photo</a>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <div>
+            <a href="{%url "images:edit" product.pk %}">Back to Product</a>
+        </div>
+    </div>
+
+{% endblock %}

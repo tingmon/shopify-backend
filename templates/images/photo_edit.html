@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+Edit Photo
+{% endblock %}
+
+{% block search_bar %}
+{% endblock %}
+
+{% block content %}
+    <div>
+        {%include "partials/auth_form.html" with form=form cta="Edit Photo"%}
+    </div>
+{% endblock %}

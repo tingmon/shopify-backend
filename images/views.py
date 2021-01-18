@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.views.generic import ListView, DetailView, View, UpdateView
 from django.core.paginator import Paginator
 from django.http import Http404
+from django.contrib import messages
 from . import models, forms
 
 # Create your views here.
@@ -11,7 +12,7 @@ global_qs = ""
 
 class HomeView(ListView):
     model = models.Product
-    paginate_by = 2
+    paginate_by = 5
     paginate_orphans = 1
     page_kwarg = "page"
     ordering = "created"
@@ -64,7 +65,7 @@ class SearchView(View):
             print(num)
             # print(request.session['qs'])
 
-            paginator = Paginator(qs, 2, 1)
+            paginator = Paginator(qs, 5, 1)
             page = request.GET.get("page", 1)
             products = paginator.get_page(page)
             # print(images.has_next())
@@ -99,6 +100,48 @@ class ProductEditView(UpdateView):
         print(product.uploader.pk, self.request.user.pk)
         print(product)
         return product
+
+
+class ProductPhotoView(ProductDetailView):
+
+    model = models.Product
+    template_name = "images/photo_list.html"
+
+    def get_object(self, queryset=None):
+        product = super().get_object(queryset=queryset)
+        if product.uploader.pk != self.request.user.pk:
+            raise Http404("Unauthorized action requested")
+        return product
+
+
+def delete_photo(request, product_pk, photo_pk):
+    user = request.user
+    print(dir(request))
+    try:
+        product = models.Product.objects.get(pk=product_pk)
+        if product.uploader.pk is not user.pk:
+            messages.error(request, "Unauthorized access")
+        else:
+            models.Photo.objects.filter(pk=photo_pk).delete()
+            messages.success(request, "Photo deleted")
+        return redirect(reverse("images:photos", kwargs={"pk": product_pk}))
+    except models.Product.DoesNotExist:
+        return redirect(reverse("core:home"))
+
+
+class PhotoEditView(UpdateView):
+    model = models.Photo
+    template_name = "images/photo_edit.html"
+    pk_url_kwarg = "photo_pk"
+    fields = (
+        "caption",
+        "file",
+    )
+
+    def get_success_url(self):
+        product_pk = self.kwargs.get("product_pk")
+        messages.success(self.request, "Photo Edited")
+        return reverse("images:photos", kwargs={"pk": product_pk})
 
 
 # def preserve_query(qs, num):

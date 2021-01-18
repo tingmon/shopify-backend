@@ -25,11 +25,12 @@ Home
         {% comment %} <a href="{% url "images:detail" product.pk %}">
             <div style="background-image: url({{product.fisrt_photo}})" ></div>
         </a> {% endcomment %}
-
+        <input type="checkbox" id="delete" name="delete" value="{{product.pk}}">
         <p>name: {{product.name}}</p>
         <p>price: {{product.price}}</p>
-        <p>stock: {{product.stock}}</p>
         {% comment %} {{image.color_detector}} {% endcomment %}
+        {% if product.low_stock %}<p>low stock</p>{% endif %}
+        {% if product.in_stock == False %}<p style="color: red;">out of stock</p>{% endif %}
     {%endfor%}
 
     <div>

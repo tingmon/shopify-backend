@@ -24,9 +24,14 @@
     <p>name: {{product.name}}</p>
     {% comment %} <p>path: {{image.file.url}}</p> {% endcomment %}
     <p>price: {{product.price}}</p>
-    <p>stock: {{product.stock}}</p>
-    {% if user.is_authenticated%}
-        <a>Order</a>
+    {% if user.is_authenticated and product.in_stock and product.low_stock == False%}
+        <a href="#">Order ({{product.stock}} left)</a>
+    {%endif%}
+    {% if user.is_authenticated and product.low_stock%}
+        <a href="#">Order (You better hurry! {{product.stock}} left)</a>
+    {%endif%}
+    {% if product.in_stock == False%}
+        <a style="color: red;">Sold out</a>
     {%endif%}
 </div>
 {%endblock%}

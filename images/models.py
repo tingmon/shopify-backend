@@ -14,6 +14,7 @@ csv = pd.read_csv('colors.csv', names=index, header=None)
 
 
 class Photo(core_models.TimeStampedModel):
+    objects = models.Manager()
     caption = models.CharField(max_length=80)
     file = models.ImageField(upload_to="photos")
     product = models.ForeignKey(
@@ -40,7 +41,7 @@ class Product(core_models.TimeStampedModel):
             self.in_stock = False
 
     def is_low_stock(self):
-        if self.is_in_stock is True:
+        if self.in_stock is True:
             if self.stock < 4:
                 self.low_stock = True
             else:
@@ -67,6 +68,7 @@ class Product(core_models.TimeStampedModel):
         photos = self.photos.all()[1:]
         print(photos)
         return photos
+
     # def color_detector(self):
     #     filename = "uploads/" + str(self.file)
     #     color = ColorThief(filename)
