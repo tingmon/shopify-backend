@@ -11,4 +11,7 @@ Edit Photo
     <div>
         {%include "partials/auth_form.html" with form=form cta="Edit Photo"%}
     </div>
+    {% comment %} <div>
+        <a href="{%url "images:photos" product.pk photo.pk %}">Cancel</a>
+    </div> {% endcomment %}
 {% endblock %}

@@ -11,7 +11,7 @@
     <div>
  
         <div >
-            <a href="#">Upload Photo</a>
+            <a href="{% url "images:add-photo" product.pk %}">Upload Photo</a>
         </div>
 
         {% for photo in product.photos.all %}

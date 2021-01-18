@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+Add Photo
+{% endblock %}
+
+{% block search_bar %}
+{% endblock %}
+
+{% block content %}
+    <div>
+        {%include "partials/auth_form.html" with form=form cta="Add Photo"%}
+    </div>
+    {% comment %} <div>
+        <a href="{%url "images:photos" product.pk %}">Cancel</a>
+    </div> {% endcomment %}
+{% endblock %}

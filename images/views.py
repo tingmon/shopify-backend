@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from django.views.generic import ListView, DetailView, View, UpdateView
+from django.views.generic import ListView, DetailView, View, UpdateView, FormView
 from django.core.paginator import Paginator
 from django.http import Http404
 from django.contrib import messages
@@ -143,68 +143,26 @@ class PhotoEditView(UpdateView):
         messages.success(self.request, "Photo Edited")
         return reverse("images:photos", kwargs={"pk": product_pk})
 
+    def get_object(self, queryset=None):
+        photo = super().get_object(queryset=queryset)
+        print(photo)
+        print(photo.file)
+        return photo
 
-# def preserve_query(qs, num):
-#     if num == 0:
-#         global_qs = qs
-#         print("y")
-#         print(global_qs)
-#         return global_qs
-#     else:
-#         print("n")
-#         return global_qs
 
-    # def search(request):
-    #     name = request.GET.get("name", "")
-    #     min_price = int(request.GET.get("min_price", 0))
-    #     max_price = int(request.GET.get("max_price", 0))
-    #     in_stock = bool(request.GET.get("in_stock", False))
+class PhotoAddView(FormView):
+    form_class = forms.PhotoAddForm
+    template_name = "images/photo_add.html"
 
-    #     request.session['name'] = name
-    #     request.session['min_price'] = min_price
-    #     request.session['max_price'] = max_price
-    #     request.session['in_stock'] = in_stock
+    def form_valid(self, form):
+        print(form)
+        print(dir(form))
+        pk = self.kwargs.get("pk")
+        form.save(pk)
+        messages.success(self.request, "Photo Added")
+        return redirect(reverse("images:photos", kwargs={"pk": pk}))
 
-    #     print(request.session['name'])
-
-    #     form = {
-    #         "name": request.session['name'],
-    #         "min_price": request.session['min_price'],
-    #         "max_price": request.session['max_price'],
-    #         "in_stock": request.session['in_stock'],
-    #     }
-
-    #     filter_args = {}
-    #     if str(name).strip() != "":
-    #         filter_args["name__contains"] = name
-    #     if max_price is not None:
-    #         filter_args["price__lte"] = max_price
-    #     if min_price is not None:
-    #         filter_args["price__gte"] = min_price
-    #     if in_stock is True:
-    #         filter_args["in_stock"] = True
-
-    #     print(filter_args)
-
-    #     if(len(filter_args) == 2):
-    #         qs = models.Product.objects.all()
-    #     else:
-    #         qs = models.Product.objects.filter(
-    #             **filter_args).order_by("created")
-    #     print(qs)
-
-    #     paginator = Paginator(qs, 2, 1)
-    #     page = request.GET.get("page", 1)
-    #     products = paginator.get_page(page)
-
-    #     return render(
-    #         request,
-    #         "test_search.html",
-    #         {**form, "products": products}
-    #     )
-
-    # def all_photos(request):
-    #     return render(
-    #         request,
-    #         "search.html"
-    #     )
+    def form_invalid(self, form):
+        print(form)
+        print(dir(form))
+        return self.render_to_response(self.get_context_data(form=form))
